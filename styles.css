@@ -1,0 +1,57 @@
+
+
+.title {
+	border-style: solid;
+	border-top-color: #03ba5b;
+	border-width: 0px;
+	border-top-width: 6px;
+	padding-top: 30px;
+	height: 100px;
+	font-family: Arial;
+}
+
+.time-container {
+	color: #707070;
+	float: left;
+	text-align: right;
+  height: 730px;
+  width: 15%;
+}
+
+.hour {
+	height: 30px;
+	padding-right: 15px;
+}
+
+.strong {
+	font-weight: bold;
+	font-size: 20px;
+}
+
+.eventBoard {
+	margin-left: 15%;
+  border-style: solid;
+	background-color: #edeff2;
+	border-color: #caccce;
+	border-width: 0px;
+  border-left-width: 1px;
+	width: 620px;
+	height: 720px;
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-top: 12px;
+}
+
+.event {
+	width: 280px;
+	height: 80px;
+	border-color: #caccce;
+  border-style: solid;
+	border-width: 1px;
+	background-color: #fff;
+	border-left-color: #03ba5b;
+  border-left-width: 6px;
+  padding: 10px;
+  font-family: Arial;
+  color: #03ba5b;
+}
