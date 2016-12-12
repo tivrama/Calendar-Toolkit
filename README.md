@@ -4,6 +4,6 @@
 
 To populate schedule:
 - open browser console
-- Paste in ```layOutDay(USER_INPUT_ARRAY_OF_EVENTS)```
 - Schedule can be cleared by running ```clearSchedule()```
-
+- Paste in ```layOutDay(USER_INPUT_ARRAY_OF_EVENTS)``` to repopulate
+- Add any events into ```layOutDay(events)```
