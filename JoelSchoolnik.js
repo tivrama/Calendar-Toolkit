@@ -15,8 +15,8 @@ var scheduleState = {
   schedule: []
 };
 
-// --- Parent function ----------------------------------------
 
+// --- Parent function ----------------------------------------
 var layOutDay = function(userInput) {
   // Make sure input is an array and has at least item in it, and has a sart and end param.  
   if (!Array.isArray(userInput) || !userInput.length) {
@@ -36,93 +36,52 @@ var layOutDay = function(userInput) {
   
   // call setW to add widths to events
   setW();
-console.log('state: ', scheduleState.schedule);
   // call populateDOM to append events
   populateDOM();
 
-  return scheduleState;
+  return scheduleState.schedule;
 };
 
 
+// Set width of each card
 var setW = function() {
   var schLength = scheduleState.schedule.length;
-  for (let i = 0; i < schLength; i++) {
+  var count = 1;
+  var count2 = 1;
+  for (var i = 0; i < schLength; i++) {
     // create or reset W param on each event
-    // TODO: Refactor to a recursive function. 
     scheduleState.schedule[i].W = 1;
-    scheduleState.schedule[i].P = 1; // P is for the horizontal position of the card
-    if (scheduleState.schedule[i - 1]) {
-      if (scheduleState.schedule[i].start < scheduleState.schedule[i - 1].end) {
-        scheduleState.schedule[i].W = 2;
-        scheduleState.schedule[i - 1].W = 2;
-        scheduleState.schedule[i].P = 1;
-        scheduleState.schedule[i - 1].P = 0;
-      }
-      if (scheduleState.schedule[i - 2]) {
-        if (scheduleState.schedule[i].start < scheduleState.schedule[i - 2].end) {
-          scheduleState.schedule[i].W = 3;
-          scheduleState.schedule[i - 1].W = 3;
-          scheduleState.schedule[i - 2].W = 3;
-          scheduleState.schedule[i].P = 2;
-          scheduleState.schedule[i - 1].P = 1;
-          scheduleState.schedule[i - 2].P = 0;
-        }
-        if (scheduleState.schedule[i - 3]) {
-          if (scheduleState.schedule[i].start < scheduleState.schedule[i - 3].end) {
-            scheduleState.schedule[i].W = 4;
-            scheduleState.schedule[i - 1].W = 4;
-            scheduleState.schedule[i - 2].W = 4;
-            scheduleState.schedule[i - 3].W = 4;
-            scheduleState.schedule[i].P = 3;
-            scheduleState.schedule[i - 1].P = 2;
-            scheduleState.schedule[i - 2].P = 1;
-            scheduleState.schedule[i - 3].P = 0;
+    // Check if current ecent collides with previous events
+    while (scheduleState.schedule[i - count]) {
+      if (scheduleState.schedule[i].start < scheduleState.schedule[i - count].end) {
+        scheduleState.schedule[i].W = count + 1;
+        scheduleState.schedule[i - count].W = count + 1;
+        // Change W on all events with a collision
+        while (scheduleState.schedule[i - count2]) {
+          if (scheduleState.schedule[i].start < scheduleState.schedule[i - count2].end) {
+            scheduleState.schedule[i - count2].W = count + 1;
           }
-          if (scheduleState.schedule[i - 4]) {
-            if (scheduleState.schedule[i].start < scheduleState.schedule[i - 4].end) {
-              scheduleState.schedule[i].W = 5;
-              scheduleState.schedule[i - 1].W = 5;
-              scheduleState.schedule[i - 2].W = 5;
-              scheduleState.schedule[i - 3].W = 5;
-              scheduleState.schedule[i - 4].W = 5;
-              scheduleState.schedule[i].P = 4;
-              scheduleState.schedule[i - 1].P = 3;
-              scheduleState.schedule[i - 2].P = 2;
-              scheduleState.schedule[i - 3].P = 1;
-              scheduleState.schedule[i - 4].P = 0;
-            }
-            if (scheduleState.schedule[i - 5]) {
-              if (scheduleState.schedule[i].start < scheduleState.schedule[i - 5].end) {
-                scheduleState.schedule[i].W = 6;
-                scheduleState.schedule[i - 1].W = 6;
-                scheduleState.schedule[i - 2].W = 6;
-                scheduleState.schedule[i - 3].W = 6;
-                scheduleState.schedule[i - 4].W = 6;
-                scheduleState.schedule[i - 5].W = 6;
-                scheduleState.schedule[i].P = 5;
-                scheduleState.schedule[i - 1].P = 4;
-                scheduleState.schedule[i - 2].P = 3;
-                scheduleState.schedule[i - 3].P = 2;
-                scheduleState.schedule[i - 4].P = 1;
-                scheduleState.schedule[i - 5].P = 0;
-              }
-            }
-          }
+          count2 ++;
         }
+        count2 = 1;
       }
+      count ++;
     }
+    count = 1;
   }
 };
 
 
+// Clear all event elements
 var removeElementsByClass = function(className){
   var elements = document.getElementsByClassName(className);
-  while(elements.length > 0){
+  while (elements.length > 0) {
     elements[0].parentNode.removeChild(elements[0]);
   }
 };
 
 
+// Set size and positions of events and append to the DOM
 var populateDOM = function() {
   // Remove all event cards from the board
   removeElementsByClass("event");
@@ -130,7 +89,7 @@ var populateDOM = function() {
   var runningPositionV = 0;
   var runningPositionH = 1;
   // Loop through scheduleState.schedule and create and apply elements
-  for (let i = 0; i < scheduleState.schedule.length; i++) {
+  for (var i = 0; i < scheduleState.schedule.length; i++) {
 
     // Create event element
     var node = document.createElement("div");
@@ -161,32 +120,24 @@ var populateDOM = function() {
     // Set horizontal coordinates
     var left = 0;
     // Set position based on W and previous divs
-    if (scheduleState.schedule[i].W > 1) {
-      if (scheduleState.schedule[i].P) {
-        left = (scheduleState.schedule[i].P * width) + 25
-      }
-    }
-
-    //..works for example with W=2..
-    /*
-    if (scheduleState.schedule[i - 1]) {
-      if (scheduleState.schedule[i].W > 1 && scheduleState.schedule[i - 1].W > 1) {
+    if (scheduleState.schedule[i].W > 1 && scheduleState.schedule[i - 1]) { //if there a prev div and width > 1
+      if (runningPositionH) {
         if (scheduleState.schedule[i].start < scheduleState.schedule[i-1].end) {
-          left = width + 25;
+          left = (width * runningPositionH) + (25 * runningPositionH);
         }
-        if (runningPositionH > 1) {
+        if (scheduleState.schedule[i - runningPositionH] && scheduleState.schedule[i].start > scheduleState.schedule[i-runningPositionH].end) {
           left = 0
+          runningPositionH = 0
         }
-        runningPositionH += 1;
       }
+      runningPositionH += 1;
+    } else {
+      runningPositionH = 0;
     }
-    */
 
     // Append to DOM
     document.getElementById("entry-board").appendChild(node);
-    if (height > 25) { // Dont show location if card is too short
-      document.getElementById(id).appendChild(location);
-    }
+    document.getElementById(id).appendChild(location);
     // Apply dimentions and position on event
     document.getElementById(id).style.width = width+'px';
     document.getElementById(id).style.height = height+'px';
@@ -196,7 +147,7 @@ var populateDOM = function() {
   }
 };
 
-// To clear schedule if using opting to keep adding events (see line 32)
+// To clear schedule.  Useful if using option to keep adding events (see line 32)
 var clearSchedule = function() {
   removeElementsByClass("event");
   return scheduleState.schedule = [];
@@ -205,8 +156,9 @@ var clearSchedule = function() {
 
 
 
+
 layOutDay(USER_INPUT_ARRAY_OF_EVENTS);
 
 
 // -- for tests ----------------
-// module.exports = { layOutDay };
+// module.exports = { layOutDay, scheduleState, setW };

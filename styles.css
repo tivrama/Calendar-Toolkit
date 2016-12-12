@@ -106,6 +106,7 @@ END DEFAULT RESET
   padding: 9px;
   font-family: Arial;
   color: #03ba5b;
+  overflow: scroll;
 }
 
 .location {
