@@ -107,3 +107,12 @@ END DEFAULT RESET
   font-family: Arial;
   color: #03ba5b;
 }
+
+.location {
+  border-width: 0px;
+  padding: 0px;
+  margin-top: 4px;
+  font-family: Arial;
+  font-size: 12px;
+  color: #707070;
+}
